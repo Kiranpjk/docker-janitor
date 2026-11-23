@@ -23,7 +23,7 @@ def parse_ts(value: str | None) -> datetime | None:
     m = _TS_RE.match(value.strip())
     if not m:
         return None
-    frac = (m.group(2) or ".0")[:7]  # Python handles at most microseconds
+    frac = (m.group(2) or ".0")[:7].ljust(7, "0")  # 3.10 fromisoformat needs exactly 3 or 6 digits
     tz = m.group(3) or "Z"
     tz = "+00:00" if tz == "Z" else tz
     return datetime.fromisoformat(f"{m.group(1)}{frac}{tz}")
